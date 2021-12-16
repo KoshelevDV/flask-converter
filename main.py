@@ -5,14 +5,14 @@ from flask import Flask, render_template, url_for, request, flash, session, redi
 
 from FDataBase import FDataBase
 
-DATABASE = '/tmp/flsite.db'
+DATABASE = '/tmp/metrics.db'
 DEBUG = True
 SECRET_KEY = 'aljr39jal39j9vjl9FJS(DFJ39rj9j3rn9v39'
 MAX_CONTENT_LENGTH = 1024 * 1024
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config.update(dict(DATABASE=os.path.join(app.root_path, 'flsite.db')))
+app.config.update(dict(DATABASE=os.path.join(app.root_path, 'metrics.db')))
 
 
 def connect_db():
@@ -72,20 +72,21 @@ def showMetric(alias):
 def time():
     db = get_db()
     dbase = FDataBase(db)
-    return render_template("time.html")
+    return render_template("time.html", metrics=dbase.getTime())
+
 
 @app.route("/temperature")
 def temperature():
     db = get_db()
     dbase = FDataBase(db)
-    return render_template("temperature.html")
+    return render_template("temperature.html", metrics=dbase.getTemperature())
 
 
 @app.route("/mass")
 def mass():
     db = get_db()
     dbase = FDataBase(db)
-    return render_template("mass.html")
+    return render_template("mass.html", metrics=dbase.getMass())
 
 
 if __name__ == "__main__":

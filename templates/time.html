@@ -2,24 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link type="text/css", href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet" />
     <title>Time</title>
 </head>
 <body>
+<div class="content">
 <h2>Time</h2>
-
-<div>
-    <label>Millisecond</label><input id="Millisecond" type="text">
+{% for m in metrics %}
+<div class='metric'>
+    <label>{{ m.name }}</label><input id="{{m.name}}"type="text">
 </div>
-<div>
-    <label>Second</label><input id="Second" type="text">
+{% endfor %}
 </div>
-<div>
-    <label>Minute</label><input id="Minute" type="text">
-</div>
-<div>
-    <label>Hour</label><input id="Hour" type="text">
-</div>
-
 
 <script type="text/javascript" src="static/js/time/Millisecond.js"></script>
 <script type="text/javascript" src="static/js/time/Second.js"></script>

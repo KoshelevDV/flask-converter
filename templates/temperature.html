@@ -2,19 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link type="text/css", href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet" />
     <title>Temperature</title>
 </head>
 <body>
+<div class="content">
 <h2>Temperature</h2>
-
-<div>
-    <label>Celsius</label><input id="Celsius" type="text">
+{% for m in metrics %}
+<div class='metric'>
+    <label>{{ m.name }}</label><input id="{{m.name}}"type="text">
 </div>
-<div>
-    <label>Fahrenheit</label><input id="fahrenheit" type="text">
-</div>
-<div>
-    <label>Kelvin</label><input id="Kelvin" type="text">
+{% endfor %}
 </div>
 
 <script type="text/javascript" src="static/js/temperature/Celsius.js"></script>
