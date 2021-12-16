@@ -55,17 +55,7 @@ dbase = None
 @app.route("/")
 def index():
     db = get_db()
-    return render_template("index.html", metrics=dbase.getMetrics())
-
-
-@app.route("/metric/<alias>")
-def showMetric(alias):
-    db = get_db()
-    dbase = FDataBase(db)
-    name = dbase.getMetric(alias)
-    if not name:
-        abort(404)
-    return render_template("metric.html", name=name)
+    return render_template("index.html", metrics=dbase.getMetrics(), title="Converter")
 
 
 @app.route("/time")

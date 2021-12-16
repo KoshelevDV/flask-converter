@@ -2,14 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hello</title>
+    <link type="text/css", href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet" />
+    <title>{{ title }}</title>
 </head>
 <body>
+{% block content -%}
+<div class="content">
 <div class="header">
-    <h1>MY CONVERTER</h1>
-    {% for i in metrics%}
-    <p><a href="{{ url_for(i.url)}}">{{i.name}}</a></p>
-    {% endfor %}
+    <h2></h2>
+    <h2>{{ title }}</h2>
 </div>
+{% for m in metrics %}
+<a href="{{ url_for(m.url) }}"><div class="menu">{{ m.name }}</div></a>
+{% endfor %}
+</div>
+
+
+{% endblock -%}
 </body>
-</html>
+</html> 

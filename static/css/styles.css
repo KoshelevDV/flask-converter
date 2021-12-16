@@ -2,8 +2,8 @@ html,
 body {
     height: 100%;
     overflow: hidden;
-    background: rgb(238,174,202);
-    background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+    background: rgb(238, 174, 202);
+    background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
 }
 
 .content {
@@ -24,6 +24,36 @@ body {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+}
+
+.content .menu {
+    font-family: 'Open Sans', sans-serif;
+    background-color: rgb(245, 245, 245);
+    font-family: 'Open Sans', sans-serif;
+    margin: 10px 0 0 0;
+    padding: 10px 0 10px 0;
+    letter-spacing: -0.2px;
+    color: #222222;
+    font-size: 13px;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 24px;
+    font-weight: normal;
+}
+
+.content .menu:hover {
+    background-color: rgb(212, 212, 212);
+}
+
+.content .menu a {
+    text-decoration: none;
+}
+
+.content .menu a:visited {
+    text-decoration: none;
+    color: #222222
 }
 
 .metric {
