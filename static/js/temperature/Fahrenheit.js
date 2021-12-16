@@ -1,4 +1,4 @@
-var Fahrenheit = document.getElementById('fahrenheit');
+var Fahrenheit = document.getElementById('Fahrenheit');
 
 Fahrenheit.oninput = function() {
     Fahrenheit.value = Fahrenheit.value.replace(",", ".")

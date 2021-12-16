@@ -15,9 +15,9 @@
 {% endfor %}
 </div>
 
-<script type="text/javascript" src="static/js/temperature/Celsius.js"></script>
-<script type="text/javascript" src="static/js/temperature/Fahrenheit.js"></script>
-<script type="text/javascript" src="static/js/temperature/Kelvin.js"></script>
+{% for m in metrics %}
+<script type="text/javascript" src="static/js/temperature/{{m.name}}.js"></script>
+{% endfor %}
 </body>
 
 </html>
