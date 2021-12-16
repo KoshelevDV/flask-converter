@@ -72,21 +72,21 @@ def showMetric(alias):
 def time():
     db = get_db()
     dbase = FDataBase(db)
-    return render_template("time.html", metrics=dbase.getTime())
+    return render_template("base.html", metrics=dbase.getTime(), title="Time")
 
 
 @app.route("/temperature")
 def temperature():
     db = get_db()
     dbase = FDataBase(db)
-    return render_template("temperature.html", metrics=dbase.getTemperature())
+    return render_template("base.html", metrics=dbase.getTemperature(), title="Temperature")
 
 
 @app.route("/mass")
 def mass():
     db = get_db()
     dbase = FDataBase(db)
-    return render_template("mass.html", metrics=dbase.getMass())
+    return render_template("base.html", metrics=dbase.getMass(), title="Mass")
 
 
 if __name__ == "__main__":

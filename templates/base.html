@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <link type="text/css", href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet" />
-    <title>Mass</title>
+    <title>{{ title }}</title>
 </head>
 <body>
+{% block content -%}
 <div class="content">
-<h2>Mass</h2>
+<h2>{{ title }}</h2>
 {% for m in metrics %}
 <div class='metric'>
     <label>{{ m.name }}</label><input id="{{m.name}}"type="text">
@@ -17,8 +18,8 @@
 
 
 {% for m in metrics %}
-<script type="text/javascript" src="static/js/mass/{{m.name}}.js"></script>
+<script type="text/javascript" src="/static/js/{{title}}/{{m.name}}.js"></script>
 {% endfor %}
+{% endblock -%}
 </body>
-
-</html>
+</html> 
