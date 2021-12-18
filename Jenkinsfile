@@ -11,15 +11,28 @@ pipeline {
         GIT_HASH=sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
       }
       steps {
-        container(name: 'kaniko', shell: '/busybox/sh') {
-          retry(count: 3){
-            sh """
-            /kaniko/executor \
-            --dockerfile Dockerfile \
-            --context `pwd`/ \
-            --destination gcr.io/koshelev/flask-converter:"${GIT_HASH}" \
-            --verbosity debug \
-            """
+        script {
+          container(name: 'gcloud', shell: 'sh') {
+            CHECK = sh(
+              script: 'gcloud container images list-tags gcr.io/koshelev/flask-converter --filter="${GIT_HASH}"',
+              returnStdout: true
+            )
+          }
+          if !(CHECK.contains(CHECK).toString()) {
+            echo "Tag not found. Building"
+            container(name: 'kaniko', shell: '/busybox/sh') {
+              retry(count: 3){
+                sh """
+                /kaniko/executor \
+                --dockerfile Dockerfile \
+                --context `pwd`/ \
+                --destination gcr.io/koshelev/flask-converter:"${GIT_HASH}" \
+                --verbosity debug \
+                """
+              }
+            }
+          } else {
+            echo "Tag found. Skipp building"
           }
         }
       }  
