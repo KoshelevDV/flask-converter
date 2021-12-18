@@ -34,10 +34,17 @@ pipeline {
     stage("Test Develop Branch") {
       environment {
         GIT_HASH=sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+        ENV = ''
       }
       steps{
         script {
           if (env.BRANCH_NAME == 'development' || env.BRANCH_NAME == 'main') {
+            if (env.BRANCH_NAME == 'development'){
+                ENV = 'dev'
+            }
+            else {
+                ENV = 'prod'
+            }
             stage("Auth to gcloud") {
               container(name: 'gcloud', shell: 'sh') {
               sh "gcloud auth activate-service-account --key-file /key/credentials.json"
@@ -51,17 +58,19 @@ pipeline {
               sh './get_helm.sh'
               }
             }
-            stage("Chart template"){
+            stage("Deploy to k8s"){
               container(name: 'gcloud', shell: 'sh'){
                 sh 'helm version'
-                sh 'helm list -n prod'
-                sh '''helm template \
-                charts/flask-converter \
+                sh 'helm list -n "${ENV}"'
+                sh '''helm template charts/flask-converter \
                 --set tag="${GIT_HASH}" \
+                --set env="${ENV}" \
+                --set service.type=LoadBalancer
                 '''
                 sh '''
                 helm upgrade --install flask-converter charts/flask-converter \
                 --set tag="${GIT_HASH}" \
+                --set env="${ENV}" \
                 --set service.type=LoadBalancer
                 '''
               }
