@@ -67,7 +67,7 @@ pipeline {
                 --set service.type=LoadBalancer
                 '''
                 sh '''
-                helm upgrade --install -n "${NEV}" flask-converter charts/flask-converter \
+                helm upgrade --install "${ENV}"-flask-converter charts/flask-converter \
                 --set tag="${GIT_HASH}" \
                 --set env="${ENV}" \
                 --set service.type=LoadBalancer
