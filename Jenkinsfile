@@ -12,10 +12,11 @@ pipeline {
         CHECK = sh(
           script: 'gcloud container images list-tags gcr.io/koshelev/flask-converter --filter='+GIT_HASH,
           returnStdout: true
-        )
+        ).trim()
       }
       steps {
         script {
+          echo env.CHECK
           if (!env.CHECK.contains(GIT_HASH).toString()) {
             echo "Tag not found. Building"
             container(name: 'kaniko', shell: '/busybox/sh') {
