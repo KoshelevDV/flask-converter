@@ -10,7 +10,7 @@ pipeline {
       environment {
         GIT_HASH=sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
         CHECK = sh(
-          script: 'gcloud container images list-tags gcr.io/koshelev/flask-converter --filter="${GIT_HASH}"',
+          script: 'gcloud container images list-tags gcr.io/koshelev/flask-converter --filter='+GIT_HASH,
           returnStdout: true
         )
       }
@@ -73,14 +73,6 @@ pipeline {
                 --set service.type=LoadBalancer
                 '''
               }
-            }
-          }
-          else {
-            stage("Skipp"){
-              sh "printenv"
-              echo GIT_HASH
-              echo ENV
-              echo env.BRANCH_NAME
             }
           }
         }
