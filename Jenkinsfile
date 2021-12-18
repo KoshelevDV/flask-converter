@@ -47,6 +47,7 @@ pipeline {
             }
             stage("Auth to gcloud") {
               container(name: 'gcloud', shell: 'sh') {
+              sh 'printenv'
               sh "gcloud auth activate-service-account --key-file /key/credentials.json"
               sh "gcloud container clusters get-credentials cluster --zone=us-central1-a"
               }
