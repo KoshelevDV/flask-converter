@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS metrics (
+id integer PRIMARY KEY AUTOINCREMENT,
+name text NOT NULL,
+url text NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS temperature (
+id integer PRIMARY KEY AUTOINCREMENT,
+name text NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS time (
+id integer PRIMARY KEY AUTOINCREMENT,
+name text NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS mass (
+id integer PRIMARY KEY AUTOINCREMENT,
+name text NOT NULL
+);

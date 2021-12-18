@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css", href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet" />
+    <title>{{ title }}</title>
+</head>
+<body>
+{% block content -%}
+<div class="content">
+<div class="header">
+    <h2><a href="{{ url_for('index') }}">Menu</a></h2>
+    <h2>{{ title }}</h2>
+</div>
+{% for m in metrics %}
+<div class='metric'>
+    <label>{{ m.name }}</label><input id="{{m.name}}"type="text">
+</div>
+{% endfor %}
+</div>
+
+
+{% for m in metrics %}
+<script type="text/javascript" src="/static/js/{{title}}/{{m.name}}.js"></script>
+{% endfor %}
+{% endblock -%}
+</body>
+</html> 
