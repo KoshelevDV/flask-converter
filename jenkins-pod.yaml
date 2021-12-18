@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+    - name: shell
+      image: ubuntu
+      command:
+        - sleep
+      args:
+        - infinity
+    - name: git
+      image: gcr.io/cloud-builders/git
+      command:
+        - sleep
+      args:
+        - infinity
+    - name: kaniko
+      image: gcr.io/kaniko-project/executor:debug
+      command:
+        - sleep
+      args:
+        - infinity
+      volumeMounts:
+        - name: kaniko-secret
+          mountPath: /secret
+      env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /secret/kaniko-secret.json
+    - name: gcloud
+      image: gcr.io/cloud-builders/gcloud
+      command: ["sleep", "infinity"]
+      volumeMounts:
+        - name: jenkins-kube-cfg
+          mountPath: /key
+  restartPolicy: Never
+  volumes:
+    - name: jenkins-kube-cfg
+      secret:
+        secretName: deployer
+        items:
+          - key: koshelev-0b1069f40499.json
+            path: credentials.json
+    - name: kaniko-secret
+      secret:
+        secretName: kaniko-secret
