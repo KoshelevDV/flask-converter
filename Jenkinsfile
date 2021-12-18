@@ -18,7 +18,7 @@ pipeline {
               returnStdout: true
             )
           }
-          if !(CHECK.contains(CHECK).toString()) {
+          if (!CHECK.contains(CHECK).toString()) {
             echo "Tag not found. Building"
             container(name: 'kaniko', shell: '/busybox/sh') {
               retry(count: 3){
