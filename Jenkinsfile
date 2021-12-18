@@ -16,23 +16,22 @@ pipeline {
       }
       steps {
         script {
-          if (env.CHECK != null){
-            if (!env.CHECK.contains(GIT_HASH).toString()) {
-              echo "Tag not found. Building"
-              container(name: 'kaniko', shell: '/busybox/sh') {
-                retry(count: 3){
-                  sh """
-                  /kaniko/executor \
-                  --dockerfile Dockerfile \
-                  --context `pwd`/ \
-                  --destination gcr.io/koshelev/flask-converter:"${GIT_HASH}" \
-                  --verbosity debug \
-                  """
-                }
+          if (env.CHECK == null){
+            echo "Tag not found. Building"
+            container(name: 'kaniko', shell: '/busybox/sh') {
+              retry(count: 3){
+                sh """
+                /kaniko/executor \
+                --dockerfile Dockerfile \
+                --context `pwd`/ \
+                --destination gcr.io/koshelev/flask-converter:"${GIT_HASH}" \
+                --verbosity debug \
+                """
               }
-            } else {
-              echo "Tag found. Skipp building"
             }
+          }
+          else {
+            echo "Tag found. Skipp building"
           }
         }
       }  
