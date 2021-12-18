@@ -34,13 +34,7 @@ pipeline {
     stage("Test Develop Branch") {
       environment {
         GIT_HASH=sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-        ENV = ''
-        if (env.BRANCH_NAME == 'development'){
-            ENV = 'dev'
-        }
-        else {
-            ENV = 'prod'
-        }
+        ENV = getEnvName(env.BRANCH_NAME)
       }
       steps{
         script {
@@ -89,4 +83,12 @@ pipeline {
       }
     }
   }
+}
+
+def getEnvName(branchName) {
+    if("development".equals(branchName)) {
+        return "dev";
+    } else {
+        return "prod";
+    } 
 }
