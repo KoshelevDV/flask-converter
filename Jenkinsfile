@@ -9,16 +9,14 @@ pipeline {
     stage('Build image and push'){
       environment {
         GIT_HASH=sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+        CHECK = sh(
+          script: 'gcloud container images list-tags gcr.io/koshelev/flask-converter --filter="${GIT_HASH}"',
+          returnStdout: true
+        )
       }
       steps {
         script {
-          container(name: 'gcloud', shell: 'sh') {
-            CHECK = sh(
-              script: 'gcloud container images list-tags gcr.io/koshelev/flask-converter --filter="${GIT_HASH}"',
-              returnStdout: true
-            )
-          }
-          if (!CHECK.contains(GIT_HASH).toString()) {
+          if (!env.CHECK.contains(GIT_HASH).toString()) {
             echo "Tag not found. Building"
             container(name: 'kaniko', shell: '/busybox/sh') {
               retry(count: 3){
