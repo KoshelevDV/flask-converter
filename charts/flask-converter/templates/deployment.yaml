@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.name }}
+  name: {{ .Values.env }}-{{ .Values.name }}
   namespace: {{ .Values.env }}
   labels:
-    app: {{ .Values.name }}
+    app: {{ .Values.env }}-{{ .Values.name }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.name }}
+      app: {{ .Values.env }}-{{ .Values.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.name }}
+        app: {{ .Values.env }}-{{ .Values.name }}
     spec:
       containers:
-        - name: {{ .Values.name }}
+        - name: {{ .Values.env }}-{{ .Values.name }}
           image: "gcr.io/koshelev/flask-converter:{{ .Values.tag }}"
           ports:
             - name: http
