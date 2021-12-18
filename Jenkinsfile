@@ -6,13 +6,6 @@ pipeline {
     }
   }
   stages {
-    stage('Clone repo') {
-      steps {
-        container(name: 'git', shell: '/bin/sh') {
-          git branch: 'fb/1.0', credentialsId: 'test-jenkins-github-token', url: 'https://github.com/KoshelevDV/flask-converter'
-        }
-      }
-    }
     stage('Build image and push'){
       environment {
         GIT_HASH=sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
