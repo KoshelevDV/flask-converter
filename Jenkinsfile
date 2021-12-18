@@ -35,16 +35,16 @@ pipeline {
       environment {
         GIT_HASH=sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
         ENV = ''
+        if (env.BRANCH_NAME == 'development'){
+            ENV = 'dev'
+        }
+        else {
+            ENV = 'prod'
+        }
       }
       steps{
         script {
           if (env.BRANCH_NAME == 'development' || env.BRANCH_NAME == 'main') {
-            if (env.BRANCH_NAME == 'development'){
-                ENV = 'dev'
-            }
-            else {
-                ENV = 'prod'
-            }
             stage("Auth to gcloud") {
               container(name: 'gcloud', shell: 'sh') {
               sh 'printenv'
@@ -81,6 +81,7 @@ pipeline {
             stage("Skipp"){
               sh "printenv"
               echo GIT_HASH
+              echo ENV
               echo env.BRANCH_NAME
             }
           }
