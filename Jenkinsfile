@@ -9,17 +9,29 @@ pipeline {
     stage('Build image and push'){
       environment {
         GIT_HASH=sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+        CHECK = sh(
+          script: 'gcloud container images list-tags gcr.io/koshelev/flask-converter --filter='+GIT_HASH,
+          returnStdout: true
+        ).trim()
       }
       steps {
-        container(name: 'kaniko', shell: '/busybox/sh') {
-          retry(count: 3){
-            sh """
-            /kaniko/executor \
-            --dockerfile Dockerfile \
-            --context `pwd`/ \
-            --destination gcr.io/koshelev/flask-converter:"${GIT_HASH}" \
-            --verbosity debug \
-            """
+        script {
+          if (env.CHECK == null){
+            echo "Tag not found. Building"
+            container(name: 'kaniko', shell: '/busybox/sh') {
+              retry(count: 3){
+                sh """
+                /kaniko/executor \
+                --dockerfile Dockerfile \
+                --context `pwd`/ \
+                --destination gcr.io/koshelev/flask-converter:"${GIT_HASH}" \
+                --verbosity debug \
+                """
+              }
+            }
+          }
+          else {
+            echo "Tag found. Skipp building"
           }
         }
       }  
@@ -34,7 +46,6 @@ pipeline {
           if (env.BRANCH_NAME == 'development' || env.BRANCH_NAME == 'main') {
             stage("Auth to gcloud") {
               container(name: 'gcloud', shell: 'sh') {
-              sh 'printenv'
               sh "gcloud auth activate-service-account --key-file /key/credentials.json"
               sh "gcloud container clusters get-credentials cluster --zone=us-central1-a"
               }
@@ -62,14 +73,6 @@ pipeline {
                 --set service.type=LoadBalancer
                 '''
               }
-            }
-          }
-          else {
-            stage("Skipp"){
-              sh "printenv"
-              echo GIT_HASH
-              echo ENV
-              echo env.BRANCH_NAME
             }
           }
         }
